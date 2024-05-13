@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.core": "yaml",
+        "*.hjson": "hjson",
+        "th_math.h": "c"
+    }
+}
