@@ -39,11 +39,11 @@ fini - calculate avg of coeffients then dealloc working memory
 verify - SNR average of coefficients vs golden reference, must run at least base iterations for valid output.
 clean - deallocate output memory
 */
-void *define_params_linpack(unsigned int idx, char *name, char *dataset);
-void *bmark_init_linpack(void *);
-void *t_run_test_linpack(struct TCDef *,void *);
+void *define_params(unsigned int idx, char *name, char *dataset);
+void *init_func(void *);
+void *bench_func(struct TCDef *,void *);
 int bmark_clean_linpack(void *);
-int bmark_verify_linpack(void *in_params);
+int veri_func(void *in_params);
 void *bmark_fini_linpack(void *in_params);
 
 /* benchmark function declarations */
@@ -60,7 +60,7 @@ static int idamax(int n,e_fp *dx,int incx);
 static e_fp epslon (e_fp x);
 static void dmxpy (int n1, e_fp * RESTRICT y, int n2, int ldm, e_fp * RESTRICT x, e_fp * RESTRICT m);
 
-void *define_params_linpack(unsigned int idx, char *name, char *dataset) {
+void *define_params(unsigned int idx, char *name, char *dataset) {
     linpack_params *params;
 	e_u32 data_index=idx;
 	init_presets_linpack();
@@ -121,7 +121,7 @@ int bmark_clean_linpack(void *in_params) {
 	return 1;
 }
 
-void *bmark_init_linpack(void *in_params) {
+void *init_func(void *in_params) {
 	/* Create a params for this invocation */
 	linpack_params *params=(linpack_params *)in_params;
     linpack_params *myparams;
@@ -169,7 +169,7 @@ int snr_set(linpack_params *params, e_u32 accbits)
 		return 1;
 }
 
-void *t_run_test_linpack(struct TCDef *tcdef,void *in_params) {
+void *bench_func(struct TCDef *tcdef,void *in_params) {
 	linpack_params *params=(linpack_params *)in_params;
 	e_u32 test1=0,test2=0;
 	
@@ -202,7 +202,7 @@ void *t_run_test_linpack(struct TCDef *tcdef,void *in_params) {
 	return tcdef;
 }
 
-int bmark_verify_linpack(void *in_params) {
+int veri_func(void *in_params) {
 	int faults=0;
 	linpack_params *params=(linpack_params *)in_params;
 	e_u32 test;

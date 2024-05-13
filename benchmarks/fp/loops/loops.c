@@ -48,11 +48,11 @@ fini - calculate avg of coeffients then dealloc working memory
 verify - SNR average of coefficients vs golden reference, must run at least base iterations for valid output.
 clean - deallocate output memory
 */
-void *define_params_loops(unsigned int idx, char *name, char *dataset);
-void *bmark_init_loops(void *);
-void *t_run_test_loops(struct TCDef *,void *);
+void *define_params(unsigned int idx, char *name, char *dataset);
+void *init_func(void *);
+void *bench_func(struct TCDef *,void *);
 int bmark_clean_loops(void *);
-int bmark_verify_loops(void *in_params);
+int veri_func(void *in_params);
 void *bmark_fini_loops(void *in_params);
 
 /* benchmark function declarations */
@@ -245,7 +245,7 @@ static e_fp get_array_feedback(e_fp *a, int maxidx) {
 	return ret/(e_fp)maxidx;
 }
 /* Benchmark */
-void *define_params_loops(unsigned int idx, char *name, char *dataset) {
+void *define_params(unsigned int idx, char *name, char *dataset) {
     loops_params *params;
 	e_u32 data_index=idx, req_bits=0;
 	unsigned int default_disable_mask=0;
@@ -418,7 +418,7 @@ void dump_sparse_data(loops_params *p) {
 	}
 }
 
-void *bmark_init_loops(void *in_params) {
+void *init_func(void *in_params) {
 	/* Create a params for this invocation */
 	int i;
 	loops_params *params=(loops_params *)in_params;
@@ -505,7 +505,7 @@ void *bmark_fini_loops(void *in_params) {
 	return NULL;
 }
 
-void *t_run_test_loops(struct TCDef *tcdef,void *in_params) {
+void *bench_func(struct TCDef *tcdef,void *in_params) {
 	e_fp val=FPCONST(0.0);
 	loops_params *params=(loops_params *)in_params;
 	e_u32 next_test=1;
@@ -559,7 +559,7 @@ void *t_run_test_loops(struct TCDef *tcdef,void *in_params) {
 	return params;
 }
 
-int bmark_verify_loops(void *in_params) {
+int veri_func(void *in_params) {
 	int ret=1;
 	loops_params *params=(loops_params *)in_params;
 

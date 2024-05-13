@@ -43,11 +43,11 @@ fini - calculate avg of coeffients then dealloc working memory
 verify - SNR average of coefficients vs golden reference, must run at least base iterations for valid output.
 clean - deallocate output memory
 */
-void *define_params_radix2(unsigned int idx, char *name, char *dataset);
-void *bmark_init_radix2(void *);
-void *t_run_test_radix2(struct TCDef *,void *);
+void *define_params(unsigned int idx, char *name, char *dataset);
+void *init_func(void *);
+void *bench_func(struct TCDef *,void *);
 int bmark_clean_radix2(void *);
-int bmark_verify_radix2(void *in_params);
+int veri_func(void *in_params);
 void *bmark_fini_radix2(void *in_params);
 
 /* benchmark function declarations */
@@ -100,7 +100,7 @@ static e_fp *calculate_twiddles(int size, int direction) {
 	}
 	return twp;
 }
-void *define_params_radix2(unsigned int idx, char *name, char *dataset) {
+void *define_params(unsigned int idx, char *name, char *dataset) {
     radix2_params *params;
 	e_s32 data_index=idx;
 	init_preset_0();
@@ -167,7 +167,7 @@ int bmark_clean_radix2(void *in_params) {
 	return 1;
 }
 
-void *bmark_init_radix2(void *in_params) {
+void *init_func(void *in_params) {
 	radix2_params *params=(radix2_params *)in_params;
     radix2_params *myparams;
 	if (in_params==NULL)
@@ -208,7 +208,7 @@ static void dump_data(int iter, int N, e_fp * RESTRICT data)
       th_printf("\t%d, %d, %1.18le\n", iter, i, data[i]);
 }
 #endif
-void *t_run_test_radix2(struct TCDef *tcdef,void *in_params) {
+void *bench_func(struct TCDef *tcdef,void *in_params) {
 	int i;
 	e_u32 test;
 	e_fp min=EE_MININI,max=EE_MAXINI,avg=FPCONST(0.0);
@@ -234,7 +234,7 @@ void *t_run_test_radix2(struct TCDef *tcdef,void *in_params) {
 	return tcdef;
 }
 
-int bmark_verify_radix2(void *in_params) {
+int veri_func(void *in_params) {
 	int i;
 	radix2_params *params=(radix2_params *)in_params;
 	if (params->gen_ref) {

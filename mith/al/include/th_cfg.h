@@ -458,7 +458,7 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 
 /** Define to 1 if your libc has the `strdup' function (uses malloc/free). */
 #if !defined (HAVE_STRDUP)
-#define HAVE_STRDUP 1
+#define HAVE_STRDUP 0
 #endif
 
 /** Define to 1 if your libc has the `strtoll' function.
@@ -492,7 +492,7 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 
 /** Set this 1 if your compiler has sys/stat.h */
 #if !defined(HAVE_SYS_STAT_H)
-#define	HAVE_SYS_STAT_H	1
+#define	HAVE_SYS_STAT_H	0
 #endif
 /** Set this 1 if declarations of STDERR/STDIN/STDOUT are required */
 #if !defined(NEED_STD_FILES)
@@ -657,10 +657,10 @@ different tool chain configurations.
 
 /* Thread related configuration */
 #ifndef HAVE_PTHREAD
-#define HAVE_PTHREAD 1
+#define HAVE_PTHREAD 0
 #endif
 #ifndef USE_NATIVE_PTHREAD
-#define USE_NATIVE_PTHREAD 1
+#define USE_NATIVE_PTHREAD 0
 #endif
 #ifndef MAX_CONTEXTS
 #define MAX_CONTEXTS 1
@@ -672,7 +672,7 @@ different tool chain configurations.
 #define HAVE_PTHREAD_SELF 0
 #endif
 #ifndef USE_SINGLE_CONTEXT
-#define USE_SINGLE_CONTEXT 0
+#define USE_SINGLE_CONTEXT 1
 #endif
 #if USE_SINGLE_CONTEXT
 #define MAX_CONTEXTS 1

@@ -34,11 +34,11 @@ fini - calculate avg of coeffients then dealloc working memory
 verify - SNR average of coefficients vs golden reference, must run at least base iterations for valid output.
 clean - deallocate output memory
 */
-void *define_params_nnet(unsigned int idx, char *name, char *dataset);
-void *bmark_init_nnet(void *);
-void *t_run_test_nnet(struct TCDef *,void *);
+void *define_params(unsigned int idx, char *name, char *dataset);
+void *init_func(void *);
+void *bench_func(struct TCDef *,void *);
 int bmark_clean_nnet(void *);
-int bmark_verify_nnet(void *in_params);
+int veri_func(void *in_params);
 void *bmark_fini_nnet(void *in_params);
 
 /* benchmark function declarations */
@@ -75,7 +75,7 @@ void init_random_patterns(nnet_params *params) {
 	th_free(rvals);
 }
 
-void *define_params_nnet(unsigned int idx, char *name, char *dataset) {
+void *define_params(unsigned int idx, char *name, char *dataset) {
     nnet_params *params;
 	e_s32 data_index=idx;
 	init_preset_0();
@@ -138,7 +138,7 @@ int bmark_clean_nnet(void *in_params) {
 	return 1;
 }
 
-void *bmark_init_nnet(void *in_params) {
+void *init_func(void *in_params) {
 	nnet_params *params=(nnet_params *)in_params;
     nnet_params *myparams;
 	if (in_params==NULL)
@@ -161,7 +161,7 @@ void *bmark_fini_nnet(void *in_params) {
 	return NULL;
 }
 
-void *t_run_test_nnet(struct TCDef *tcdef,void *in_params) {
+void *bench_func(struct TCDef *tcdef,void *in_params) {
 	nnet_params *params=(nnet_params *)in_params;
 	e_u32 test;
 	
@@ -186,7 +186,7 @@ void *t_run_test_nnet(struct TCDef *tcdef,void *in_params) {
 	return tcdef;
 }
 
-int bmark_verify_nnet(void *in_params) {
+int veri_func(void *in_params) {
 	int i,m,val;
 	nnet_params *params=(nnet_params *)in_params;
 	int	inpat_size=params->d_y * params->d_x;
